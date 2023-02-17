@@ -40,10 +40,11 @@ final avatarWidget = PeepAvatar.fromPeep(
 
 class _HomePageState extends State<HomePage> {
   String greetingTextPrint = 'Loading...';
+  String greetingTextLanguage = 'Loading...';
 
   @override
   void initState() {
-    hehe2(); //idhar directly hehe() call krste hai vs usme return type void krdo or fir hehe2() ki koi zarurat nhi
+    hehe(); //idhar directly hehe() call krste hai vs usme return type void krdo or fir hehe2() ki koi zarurat nhi
     super.initState();
     // print("initState() called");
 
@@ -72,6 +73,7 @@ class _HomePageState extends State<HomePage> {
         final greetingText = jsonResponse['greeting'];
         setState(() {
           greetingTextPrint = greetingText;
+          greetingTextLanguage = jsonResponse['language'];
           devtools.log(
               "Greeting text loaded: $greetingText, language: ${jsonResponse['language']}");
           //   print(greetingTextPrint);
@@ -88,10 +90,30 @@ class _HomePageState extends State<HomePage> {
     }
   }
 
-  void hehe2() async {
-    devtools.log("hehe2() called");
-    //print("hehe2() called");
-    await hehe();
+  String hehe2() {
+    String heheInfo =
+        '$greetingTextPrint is a greeting in $greetingTextLanguage language.';
+    return heheInfo;
+  }
+
+  void showInfoDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text('info'),
+          content: Text(hehe2()), //(){},
+          actions: <Widget>[
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: const Text('OK'),
+            ),
+          ],
+        );
+      },
+    );
   }
 
   @override
@@ -139,7 +161,7 @@ class _HomePageState extends State<HomePage> {
                     ),
                     IconButton(
                       onPressed: () {
-                        devtools.log("Info button pressed");
+                        showInfoDialog(context);
                       },
                       padding: const EdgeInsets.all(0.0),
                       alignment: Alignment.topLeft,
