@@ -124,13 +124,30 @@ class _HomePageState extends State<HomePage> {
 
                 const SizedBox(height: 20),
 
-                Text(
-                  greetingTextPrint + "!",
-                  textAlign: TextAlign.center,
-                  style: GoogleFonts.notoSans(
-                    fontWeight: FontWeight.w900,
-                    fontSize: 16,
-                  ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    const SizedBox(width: 48),
+                    Text(
+                      // ignore: prefer_interpolation_to_compose_strings
+                      greetingTextPrint + "!",
+                      textAlign: TextAlign.center,
+                      style: GoogleFonts.notoSans(
+                        fontWeight: FontWeight.w900,
+                        fontSize: 16,
+                      ),
+                    ),
+                    IconButton(
+                      onPressed: () {
+                        devtools.log("Info button pressed");
+                      },
+                      padding: const EdgeInsets.all(0.0),
+                      alignment: Alignment.topLeft,
+                      icon: const Icon(Icons.info),
+                      splashRadius: 0.1,
+                      iconSize: 15.0,
+                    ),
+                  ],
                 ),
 
                 const SizedBox(height: 10),
@@ -234,7 +251,9 @@ class _HomePageState extends State<HomePage> {
                       // ],
                     ),
                     child: TextButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        devtools.log("Login button pressed");
+                      },
                       child: const Text(
                         "Login",
                         style: TextStyle(color: Colors.white),
