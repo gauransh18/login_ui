@@ -95,15 +95,20 @@ class _registerViewState extends State<registerView> {
     showDialog(
       context: context,
       builder: (BuildContext context) {
-        return AlertDialog(
-          title: const Text('info'),
-          content: Text(hehe2()), //(){},
-          actions: <Widget>[
+        return CupertinoAlertDialog(
+          title: Text("Information"),
+          content: Text(hehe2()),
+          actions: [
             TextButton(
               onPressed: () {
                 Navigator.of(context).pop();
               },
-              child: const Text('OK'),
+              child: const Text(
+                'OK',
+                style: TextStyle(
+                  color: Colors.blue,
+                ),
+              ),
             ),
           ],
         );
@@ -189,7 +194,7 @@ class _registerViewState extends State<registerView> {
                 padding: const EdgeInsets.all(0.0),
                 alignment: Alignment.topLeft,
                 icon: const Icon(Icons.info),
-                splashRadius: 0.1,
+                splashRadius: 0.5,
                 iconSize: 15.0,
               ),
             ],

@@ -183,7 +183,7 @@ class _HomePageState extends State<HomePage> {
                         padding: const EdgeInsets.all(0.0),
                         alignment: Alignment.topLeft,
                         icon: const Icon(Icons.info),
-                        splashRadius: 0.1,
+                        splashRadius: 0.5,
                         iconSize: 15.0,
                       ),
                     ],
