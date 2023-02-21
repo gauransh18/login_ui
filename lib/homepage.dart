@@ -1,4 +1,4 @@
-// ignore_for_file: prefer_const_constructors, use_build_context_synchronously
+// ignore_for_file: prefer_const_constructors, use_build_context_synchronously, non_constant_identifier_names
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -12,6 +12,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:login_ui/utilities/show_error_dialog.dart';
 import '../constants/routes.dart';
 import '../services/auth/auth_service.dart';
+import 'package:email_validator/email_validator.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -40,9 +41,11 @@ class _HomePageState extends State<HomePage> {
 
   late final TextEditingController _email;
   late final TextEditingController _password;
+  late TextEditingController _email_pswdReset;
 
   @override
   void initState() {
+    _email_pswdReset = TextEditingController();
     _email = TextEditingController();
     _password = TextEditingController();
     hehe();
@@ -142,8 +145,127 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
+  Future<void> resetPassword({required String email}) async {
+    await FirebaseAuth.instance.sendPasswordResetEmail(email: email);
+  }
+
+  void resetPassword2({required String email}) {
+    if (EmailValidator.validate(email)) {
+      resetPassword(email: email);
+      pswdReset2(context);
+      Navigator.pop(context);
+    } else {
+      showDialog(
+          context: context,
+          builder: (context) {
+            return CupertinoAlertDialog(
+                title: Text('Oops!'),
+                content: Text('error: invalid-email-address'),
+                actions: [
+                  TextButton(
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
+                    child: const Text(
+                      'OK',
+                      style: TextStyle(
+                        color: Colors.blue,
+                      ),
+                    ),
+                  ),
+                ]);
+          });
+    }
+  }
+
+  void pswdReset(BuildContext context) {
+    showDialog(
+        context: context,
+        builder: (context) {
+          return CupertinoAlertDialog(
+            title: Text("Reset Password"),
+            content: Column(children: [
+              Padding(
+                  padding: EdgeInsets.all(5.0),
+                  child: Text(
+                      "Please enter your email address to reset your password.")),
+              CupertinoTextField(
+                style: TextStyle(
+                  color: Color.fromARGB(255, 84, 84, 84),
+                ),
+                controller: _email_pswdReset,
+                placeholder: "Email",
+              ),
+            ]),
+            actions: [
+              TextButton(
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+                child: const Text(
+                  'Cancel',
+                  style: TextStyle(
+                    color: Colors.blue,
+                  ),
+                ),
+              ),
+              TextButton(
+                onPressed: () {
+                  resetPassword2(email: _email_pswdReset.text);
+                },
+                child: const Text(
+                  'Reset',
+                  style: TextStyle(
+                    color: Colors.green,
+                  ),
+                ),
+              ),
+            ],
+          );
+        });
+  }
+
+  void pswdReset2(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return CupertinoAlertDialog(
+          title: Text("Email Sent"),
+          content: Text(
+              "An email has been send with a link to reset your password."),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: const Text(
+                'Ok',
+                style: TextStyle(
+                  color: Colors.blue,
+                ),
+              ),
+            ),
+            TextButton(
+              onPressed: () {
+                resetPassword(email: _email_pswdReset.text);
+                Navigator.of(context).pop();
+              },
+              child: const Text(
+                'Resend',
+                style: TextStyle(
+                  color: Colors.green,
+                ),
+              ),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
   @override
   void dispose() {
+    _email_pswdReset.dispose();
     _email.dispose();
     _password.dispose();
     super.dispose();
@@ -249,12 +371,15 @@ class _HomePageState extends State<HomePage> {
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.end,
                         children: [
-                          Text("Forgot Password?",
-                              style: TextStyle(
-                                fontWeight: FontWeight.normal,
-                                color: Colors.grey[600],
-                                fontSize: 12.0,
-                              )),
+                          GestureDetector(
+                            onTap: () => pswdReset(context),
+                            child: Text("Forgot Password?",
+                                style: TextStyle(
+                                  fontWeight: FontWeight.normal,
+                                  color: Colors.grey[600],
+                                  fontSize: 12.0,
+                                )),
+                          ),
                         ],
                       )),
                   const SizedBox(height: 10),
