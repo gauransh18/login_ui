@@ -414,13 +414,9 @@ class _HomePageState extends State<HomePage> {
                           ),
                           child: GestureDetector(
                               onTap: () =>
-
-                                  
-
                                   AuthService2().signINWtihGoogle(context).then(
                                     (value) {
                                       if (value != null) {
-                                        Navigator.pop(context);
                                         Navigator.of(context)
                                             .pushNamedAndRemoveUntil(
                                           finalRoute,

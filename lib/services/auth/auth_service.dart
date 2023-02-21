@@ -41,12 +41,6 @@ class AuthService implements AuthProvider {
 
 class AuthService2 {
   signINWtihGoogle(context) async {
-    showDialog(
-        context: context,
-        builder: (context) {
-          return const Center(child: CircularProgressIndicator());
-        });
-
     devtools.log("signINWtihGoogle");
 
     final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
@@ -59,8 +53,10 @@ class AuthService2 {
       idToken: googleAuth.idToken,
     );
 
-
-    return await FirebaseAuth.instance.signInWithCredential(credential);
-    
+    return await FirebaseAuth.instance
+        .signInWithCredential(credential)
+        .catchError((onError) {
+      return onError;
+    });
   }
 }

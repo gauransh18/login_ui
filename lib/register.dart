@@ -162,9 +162,9 @@ class _registerViewState extends State<registerView> {
                 const SizedBox(height: 20),
                 //avatar illustration
                 avatarWidget,
-                
+
                 const SizedBox(height: 20),
-                
+
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
@@ -189,7 +189,7 @@ class _registerViewState extends State<registerView> {
                     ),
                   ],
                 ),
-                
+
                 const SizedBox(height: 10),
                 //email text field
                 Padding(
@@ -214,7 +214,7 @@ class _registerViewState extends State<registerView> {
                     ),
                   ),
                 ),
-                
+
                 const SizedBox(height: 10),
                 //password text field
                 Padding(
@@ -241,7 +241,7 @@ class _registerViewState extends State<registerView> {
                     ),
                   ),
                 ),
-                
+
                 const SizedBox(height: 10),
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 20.0),
@@ -257,7 +257,7 @@ class _registerViewState extends State<registerView> {
                         devtools.log("Register button pressed");
                         final email = _email.text;
                         final password = _password.text;
-                
+
                         showDialog(
                           context: context,
                           builder: (context) {
@@ -266,9 +266,10 @@ class _registerViewState extends State<registerView> {
                             );
                           },
                         );
-                
+
                         try {
-                          await FirebaseAuth.instance.createUserWithEmailAndPassword(
+                          await FirebaseAuth.instance
+                              .createUserWithEmailAndPassword(
                             email: email,
                             password: password,
                           );
@@ -278,19 +279,19 @@ class _registerViewState extends State<registerView> {
                           verificationDialog(context);
                         } on FirebaseAuthException catch (e) {
                           if (e.code == 'weak-password') {
-                             Navigator.pop(context);
+                            Navigator.pop(context);
                             await showErrorDialog(
                               context,
                               "Weak password",
                             );
                           } else if (e.code == 'email-already-in-use') {
-                             Navigator.pop(context);
+                            Navigator.pop(context);
                             await showErrorDialog(
                               context,
                               "Email is already in use",
                             );
                           } else if (e.code == 'invalid-email') {
-                             Navigator.pop(context);
+                            Navigator.pop(context);
                             await showErrorDialog(
                               context,
                               "Invalid email",
@@ -303,7 +304,7 @@ class _registerViewState extends State<registerView> {
                             );
                           }
                         } catch (e) {
-                           Navigator.pop(context);
+                          Navigator.pop(context);
                           await showErrorDialog(
                             context,
                             e.toString(),
@@ -334,7 +335,7 @@ class _registerViewState extends State<registerView> {
                         child: const Text("Login")),
                   ],
                 ),
-                
+
                 //or continue with using divider
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -362,9 +363,9 @@ class _registerViewState extends State<registerView> {
                     const SizedBox(width: 20),
                   ],
                 ),
-                
+
                 const SizedBox(height: 20),
-                
+
                 //google login button
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -377,17 +378,20 @@ class _registerViewState extends State<registerView> {
                           borderRadius: BorderRadius.circular(15),
                         ),
                         child: GestureDetector(
-                            onTap: () => AuthService2().signINWtihGoogle(context).then(
+                            onTap: () =>
+                                AuthService2().signINWtihGoogle(context).then(
                                   (value) {
                                     if (value != null) {
-                                      Navigator.of(context).pushNamedAndRemoveUntil(
+                                      Navigator.of(context)
+                                          .pushNamedAndRemoveUntil(
                                         finalRoute,
                                         (_) => false,
                                       );
                                     }
                                   },
                                 ),
-                            child: Image.asset('assets/google.png', height: 40.0))),
+                            child: Image.asset('assets/google.png',
+                                height: 40.0))),
                   ],
                 )
               ],
