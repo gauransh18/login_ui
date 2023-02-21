@@ -99,48 +99,6 @@ class _FinalSState extends State<FinalS> {
           ),
         ),
 
-        // Align(
-        //   alignment: Alignment.bottomCenter,
-        //   child: Container(
-        //     alignment: Alignment.center,
-        //     child: TextButton(
-        //       onPressed: () {
-        //         showLogOutDialog(context);
-        //       },
-        //       child: const Text("Log out"),
-        //     ),
-        //   ),
-        // ),
-
-        // Column(
-        //   mainAxisAlignment: MainAxisAlignment.center,
-        //   children: [
-        //     Align(
-        //       alignment: Alignment.center,
-        //       child: Container(
-        //         alignment: Alignment.center,
-        //         child: TextButton(
-        //           onPressed: () {
-        //             _controller.play();
-        //           },
-        //           child: const Text("Celebrate again"),
-        //         ),
-        //       ),
-        //     ),
-        //     Align(
-        //       alignment: Alignment.center,
-        //       child: Container(
-        //         alignment: Alignment.center,
-        //         child: TextButton(
-        //           onPressed: () {
-        //             showLogOutDialog(context);
-        //           },
-        //           child: const Text("Log out"),
-        //         ),
-        //       ),
-        //     ),
-        //   ],
-        // )
       ],
     ));
   }
