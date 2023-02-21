@@ -11,6 +11,7 @@ import 'dart:developer' as devtools show log;
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:login_ui/utilities/show_error_dialog.dart';
 import '../constants/routes.dart';
+import '../services/auth/auth_service.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -34,8 +35,8 @@ final avatarWidget = PeepAvatar.fromPeep(
 );
 
 class _HomePageState extends State<HomePage> {
-  String greetingTextPrint = 'Loading...';
-  String greetingTextLanguage = 'Loading...';
+  String greetingTextPrint = 'Hello!';
+  String greetingTextLanguage = 'English';
 
   late final TextEditingController _email;
   late final TextEditingController _password;
@@ -204,9 +205,11 @@ class _HomePageState extends State<HomePage> {
                         child: TextField(
                           //controller: _email,
                           decoration: const InputDecoration(
-                            border: InputBorder.none,
-                            hintText: "email/username",
-                          ),
+                              border: InputBorder.none,
+                              hintText: "Email",
+                              hintStyle: TextStyle(
+                                color: Color.fromARGB(255, 117, 117, 117),
+                              )),
                           controller: _email,
                         ),
                       ),
@@ -230,14 +233,30 @@ class _HomePageState extends State<HomePage> {
                           enableSuggestions: false,
                           autocorrect: false,
                           decoration: const InputDecoration(
-                            border: InputBorder.none,
-                            hintText: "password",
-                          ),
+                              border: InputBorder.none,
+                              hintText: "Password",
+                              hintStyle: TextStyle(
+                                color: Color.fromARGB(255, 117, 117, 117),
+                              )),
                         ),
                       ),
                     ),
                   ),
+                  SizedBox(height: 5.0),
 
+                  Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 25.0),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: [
+                          Text("Forgot Password?",
+                              style: TextStyle(
+                                fontWeight: FontWeight.normal,
+                                color: Colors.grey[600],
+                                fontSize: 12.0,
+                              )),
+                        ],
+                      )),
                   const SizedBox(height: 10),
 
                   //login button
@@ -254,6 +273,14 @@ class _HomePageState extends State<HomePage> {
                         onPressed: () async {
                           devtools.log("Login button pressed");
 
+                          showDialog(
+                            context: context,
+                            builder: (context) {
+                              return const Center(
+                                child: CircularProgressIndicator(),
+                              );
+                            },
+                          );
                           final email = _email.text;
                           final password = _password.text;
 
@@ -268,38 +295,45 @@ class _HomePageState extends State<HomePage> {
                             if (user != null) {
                               if (user.emailVerified) {
                                 devtools.log("User is verified");
+                                Navigator.pop(context);
                                 Navigator.of(context).pushNamedAndRemoveUntil(
                                   finalRoute,
                                   (_) => false,
                                 );
                               } else {
                                 devtools.log("User is not verified");
+                                Navigator.pop(context);
                                 verificationDialog(context);
                               }
                             }
                           } on FirebaseAuthException catch (e) {
                             if (e.code == 'user-not-found') {
+                              Navigator.pop(context);
                               await showErrorDialog(
                                 context,
                                 "User not found",
                               );
                             } else if (e.code == 'wrong-password') {
+                              Navigator.pop(context);
                               await showErrorDialog(
                                 context,
                                 "Wrong password",
                               );
                             } else if (e.code == 'too-many-requests') {
+                              Navigator.pop(context);
                               await showErrorDialog(
                                 context,
                                 "Too many attempts.\nPlease try again after sometime",
                               );
                             } else {
+                              Navigator.pop(context);
                               await showErrorDialog(
                                 context,
                                 "Error: ${e.code}",
                               );
                             }
                           } catch (e) {
+                            Navigator.pop(context);
                             await showErrorDialog(
                               context,
                               e.toString(),
@@ -336,12 +370,73 @@ class _HomePageState extends State<HomePage> {
                   ),
 
                   const SizedBox(height: 10),
+
+                  //or continue with using divider
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    // ignore: prefer_const_literals_to_create_immutables
+                    children: [
+                      const SizedBox(width: 20),
+                      Expanded(
+                        child: Divider(
+                          color: Colors.grey,
+                          thickness: 0.5,
+                        ),
+                      ),
+                      const SizedBox(width: 10),
+                      const Text("Or continue with",
+                          style: TextStyle(
+                            color: Color.fromARGB(255, 87, 87, 87),
+                          )),
+                      const SizedBox(width: 10),
+                      Expanded(
+                        child: Divider(
+                          color: Colors.grey,
+                          thickness: 0.5,
+                        ),
+                      ),
+                      const SizedBox(width: 20),
+                    ],
+                  ),
+
+                  const SizedBox(height: 20),
+
+                  //google login button
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Container(
+                          alignment: Alignment.center,
+                          padding: EdgeInsets.all(10.0),
+                          decoration: BoxDecoration(
+                            color: Colors.grey[100],
+                            borderRadius: BorderRadius.circular(15),
+                          ),
+                          child: GestureDetector(
+                              onTap: () =>
+
+                                  
+
+                                  AuthService2().signINWtihGoogle(context).then(
+                                    (value) {
+                                      if (value != null) {
+                                        Navigator.pop(context);
+                                        Navigator.of(context)
+                                            .pushNamedAndRemoveUntil(
+                                          finalRoute,
+                                          (_) => false,
+                                        );
+                                      }
+                                    },
+                                  ),
+                              child: Image.asset('assets/google.png',
+                                  height: 40.0))),
+                    ],
+                  )
                 ],
               ),
             ),
           ),
-          // ],
-          //   ),
         ));
   }
 }

@@ -1,4 +1,4 @@
-// ignore_for_file: camel_case_types
+// ignore_for_file: camel_case_types, prefer_const_constructors
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -11,20 +11,7 @@ import 'dart:developer' as devtools show log;
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:login_ui/utilities/show_error_dialog.dart';
 import 'package:login_ui/constants/routes.dart';
-
-// class registerView extends StatefulWidget {
-//   const registerView({super.key});
-
-//   @override
-//   State<registerView> createState() => _registerViewState();
-// }
-
-// class _registerViewState extends State<registerView> {
-//   @override
-//   Widget build(BuildContext context) {
-//     return Container();
-//   }
-// }
+import 'package:login_ui/services/auth/auth_service.dart';
 
 class registerView extends StatefulWidget {
   const registerView({Key? key}) : super(key: key);
@@ -47,8 +34,8 @@ final avatarWidget = PeepAvatar.fromPeep(
 );
 
 class _registerViewState extends State<registerView> {
-  String greetingTextPrint = 'Loading...';
-  String greetingTextLanguage = 'Loading...';
+  String greetingTextPrint = 'Hello!';
+  String greetingTextLanguage = 'English';
 
   late final TextEditingController _email;
   late final TextEditingController _password;
@@ -129,7 +116,8 @@ class _registerViewState extends State<registerView> {
             TextButton(
               onPressed: () {
                 Navigator.of(context).pop();
-                Navigator.of(context).pushNamedAndRemoveUntil(loginRoute, (route) => false);
+                Navigator.of(context)
+                    .pushNamedAndRemoveUntil(loginRoute, (route) => false);
               },
               child: const Text(
                 'Continue',
@@ -155,7 +143,6 @@ class _registerViewState extends State<registerView> {
     );
   }
 
-
   @override
   void dispose() {
     _email.dispose();
@@ -166,166 +153,247 @@ class _registerViewState extends State<registerView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          const SizedBox(height: 20),
-          //avatar illustration
-          avatarWidget,
-
-          const SizedBox(height: 20),
-
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              const SizedBox(width: 48),
-              Text(
-                greetingTextPrint,
-                textAlign: TextAlign.center,
-                style: GoogleFonts.notoSans(
-                  fontWeight: FontWeight.w900,
-                  fontSize: 16,
+      body: SafeArea(
+        child: Center(
+          child: SingleChildScrollView(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                const SizedBox(height: 20),
+                //avatar illustration
+                avatarWidget,
+                
+                const SizedBox(height: 20),
+                
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    const SizedBox(width: 48),
+                    Text(
+                      greetingTextPrint,
+                      textAlign: TextAlign.center,
+                      style: GoogleFonts.notoSans(
+                        fontWeight: FontWeight.w900,
+                        fontSize: 16,
+                      ),
+                    ),
+                    IconButton(
+                      onPressed: () {
+                        showInfoDialog(context);
+                      },
+                      padding: const EdgeInsets.all(0.0),
+                      alignment: Alignment.topLeft,
+                      icon: const Icon(Icons.info),
+                      splashRadius: 0.5,
+                      iconSize: 15.0,
+                    ),
+                  ],
                 ),
-              ),
-              IconButton(
-                onPressed: () {
-                  showInfoDialog(context);
-                },
-                padding: const EdgeInsets.all(0.0),
-                alignment: Alignment.topLeft,
-                icon: const Icon(Icons.info),
-                splashRadius: 0.5,
-                iconSize: 15.0,
-              ),
-            ],
-          ),
-
-          const SizedBox(height: 10),
-          //email text field
-          Padding(
-            padding: const EdgeInsets.fromLTRB(20.0, 20.0, 20.0, 0.0),
-            child: Container(
-              decoration: BoxDecoration(
-                color: const Color.fromARGB(255, 225, 225, 225),
-                borderRadius: BorderRadius.circular(10),
-              ),
-              child: Padding(
-                padding: const EdgeInsets.only(left: 10.0),
-                child: TextField(
-                  //controller: _email,
-                  decoration: const InputDecoration(
-                    border: InputBorder.none,
-                    hintText: "email/username",
-                  ),
-                  controller: _email,
-                ),
-              ),
-            ),
-          ),
-
-          const SizedBox(height: 10),
-          //password text field
-          Padding(
-            padding: const EdgeInsets.fromLTRB(20.0, 0.0, 20.0, 0.0),
-            child: Container(
-              decoration: BoxDecoration(
-                color: const Color.fromARGB(255, 225, 225, 225),
-                borderRadius: BorderRadius.circular(10),
-              ),
-              child: Padding(
-                padding: const EdgeInsets.only(left: 10.0),
-                child: TextField(
-                  controller: _password,
-                  obscureText: true,
-                  enableSuggestions: false,
-                  autocorrect: false,
-                  decoration: const InputDecoration(
-                    border: InputBorder.none,
-                    hintText: "password",
+                
+                const SizedBox(height: 10),
+                //email text field
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(20.0, 20.0, 20.0, 0.0),
+                  child: Container(
+                    decoration: BoxDecoration(
+                      color: const Color.fromARGB(255, 225, 225, 225),
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    child: Padding(
+                      padding: const EdgeInsets.only(left: 10.0),
+                      child: TextField(
+                        //controller: _email,
+                        decoration: const InputDecoration(
+                            border: InputBorder.none,
+                            hintText: "Email",
+                            hintStyle: TextStyle(
+                              color: Color.fromARGB(255, 117, 117, 117),
+                            )),
+                        controller: _email,
+                      ),
+                    ),
                   ),
                 ),
-              ),
-            ),
-          ),
-
-          const SizedBox(height: 10),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 20.0),
-            child: Container(
-              width: double.infinity,
-              padding: const EdgeInsets.all(5.0),
-              decoration: BoxDecoration(
-                color: const Color.fromARGB(255, 79, 158, 255),
-                borderRadius: BorderRadius.circular(10),
-              ),
-              child: TextButton(
-                onPressed: () async {
-                  devtools.log("Register button pressed");
-                  final email = _email.text;
-                  final password = _password.text;
-                  try {
-                    await FirebaseAuth.instance.createUserWithEmailAndPassword(
-                      email: email,
-                      password: password,
-                    );
-                    final user = FirebaseAuth.instance.currentUser;
-                    await user?.sendEmailVerification();
-                    // ignore: use_build_context_synchronously
-                    verificationDialog(context);
-                  } on FirebaseAuthException catch (e) {
-                    if (e.code == 'weak-password') {
-                      await showErrorDialog(
-                        context,
-                        "Weak password",
-                      );
-                    } else if (e.code == 'email-already-in-use') {
-                      await showErrorDialog(
-                        context,
-                        "Email is already in use",
-                      );
-                    } else if (e.code == 'invalid-email') {
-                      await showErrorDialog(
-                        context,
-                        "Invalid email",
-                      );
-                    } else {
-                      await showErrorDialog(
-                        context,
-                        "Error: ${e.code}",
-                      );
-                    }
-                  } catch (e) {
-                    await showErrorDialog(
-                      context,
-                      e.toString(),
-                    );
-                  }
-                },
-                child: const Text(
-                  "Register",
-                  style: TextStyle(
-                    color: Colors.white,
+                
+                const SizedBox(height: 10),
+                //password text field
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(20.0, 0.0, 20.0, 0.0),
+                  child: Container(
+                    decoration: BoxDecoration(
+                      color: const Color.fromARGB(255, 225, 225, 225),
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    child: Padding(
+                      padding: const EdgeInsets.only(left: 10.0),
+                      child: TextField(
+                        controller: _password,
+                        obscureText: true,
+                        enableSuggestions: false,
+                        autocorrect: false,
+                        decoration: const InputDecoration(
+                            border: InputBorder.none,
+                            hintText: "Password",
+                            hintStyle: TextStyle(
+                              color: Color.fromARGB(255, 117, 117, 117),
+                            )),
+                      ),
+                    ),
                   ),
                 ),
-              ),
+                
+                const SizedBox(height: 10),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                  child: Container(
+                    width: double.infinity,
+                    padding: const EdgeInsets.all(5.0),
+                    decoration: BoxDecoration(
+                      color: const Color.fromARGB(255, 79, 158, 255),
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    child: TextButton(
+                      onPressed: () async {
+                        devtools.log("Register button pressed");
+                        final email = _email.text;
+                        final password = _password.text;
+                
+                        showDialog(
+                          context: context,
+                          builder: (context) {
+                            return const Center(
+                              child: CircularProgressIndicator(),
+                            );
+                          },
+                        );
+                
+                        try {
+                          await FirebaseAuth.instance.createUserWithEmailAndPassword(
+                            email: email,
+                            password: password,
+                          );
+                          final user = FirebaseAuth.instance.currentUser;
+                          await user?.sendEmailVerification();
+                          // ignore: use_build_context_synchronously
+                          verificationDialog(context);
+                        } on FirebaseAuthException catch (e) {
+                          if (e.code == 'weak-password') {
+                             Navigator.pop(context);
+                            await showErrorDialog(
+                              context,
+                              "Weak password",
+                            );
+                          } else if (e.code == 'email-already-in-use') {
+                             Navigator.pop(context);
+                            await showErrorDialog(
+                              context,
+                              "Email is already in use",
+                            );
+                          } else if (e.code == 'invalid-email') {
+                             Navigator.pop(context);
+                            await showErrorDialog(
+                              context,
+                              "Invalid email",
+                            );
+                          } else {
+                            Navigator.pop(context);
+                            await showErrorDialog(
+                              context,
+                              "Error: ${e.code}",
+                            );
+                          }
+                        } catch (e) {
+                           Navigator.pop(context);
+                          await showErrorDialog(
+                            context,
+                            e.toString(),
+                          );
+                        }
+                      },
+                      child: const Text(
+                        "Register",
+                        style: TextStyle(
+                          color: Colors.white,
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+                // const SizedBox(height: 20),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    const Text("Already have an account?"),
+                    TextButton(
+                        onPressed: () {
+                          Navigator.of(context).pushNamedAndRemoveUntil(
+                            loginRoute,
+                            (route) => false,
+                          );
+                        },
+                        child: const Text("Login")),
+                  ],
+                ),
+                
+                //or continue with using divider
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  // ignore: prefer_const_literals_to_create_immutables
+                  children: [
+                    const SizedBox(width: 20),
+                    Expanded(
+                      child: Divider(
+                        color: Colors.grey,
+                        thickness: 0.5,
+                      ),
+                    ),
+                    const SizedBox(width: 10),
+                    const Text("Or continue with",
+                        style: TextStyle(
+                          color: Color.fromARGB(255, 87, 87, 87),
+                        )),
+                    const SizedBox(width: 10),
+                    Expanded(
+                      child: Divider(
+                        color: Colors.grey,
+                        thickness: 0.5,
+                      ),
+                    ),
+                    const SizedBox(width: 20),
+                  ],
+                ),
+                
+                const SizedBox(height: 20),
+                
+                //google login button
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Container(
+                        alignment: Alignment.center,
+                        padding: EdgeInsets.all(10.0),
+                        decoration: BoxDecoration(
+                          color: Colors.grey[100],
+                          borderRadius: BorderRadius.circular(15),
+                        ),
+                        child: GestureDetector(
+                            onTap: () => AuthService2().signINWtihGoogle(context).then(
+                                  (value) {
+                                    if (value != null) {
+                                      Navigator.of(context).pushNamedAndRemoveUntil(
+                                        finalRoute,
+                                        (_) => false,
+                                      );
+                                    }
+                                  },
+                                ),
+                            child: Image.asset('assets/google.png', height: 40.0))),
+                  ],
+                )
+              ],
             ),
           ),
-          // const SizedBox(height: 20),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              const Text("Already have an account?"),
-              TextButton(
-                  onPressed: () {
-                    Navigator.of(context).pushNamedAndRemoveUntil(
-                      loginRoute,
-                      (route) => false,
-                    );
-                  },
-                  child: const Text("Login")),
-            ],
-          )
-        ],
+        ),
       ),
     );
   }

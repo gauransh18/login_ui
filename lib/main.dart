@@ -5,7 +5,6 @@ import 'mainScreen.dart';
 import 'package:login_ui/constants/routes.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'dart:developer' as devtools show log;
 import '../fireabase/firebase_options.dart';
 
 void main() async {
@@ -27,6 +26,30 @@ void main() async {
       }));
 }
 
+// class CheckUserStatus extends StatelessWidget {
+//   const CheckUserStatus({super.key});
+
+//   @override
+//   Widget build(BuildContext context) {
+//     return Scaffold(
+//         body: StreamBuilder<User?>(
+//       stream: FirebaseAuth.instance.authStateChanges(),
+//       builder: (context, snapshot) {
+//         if (snapshot.connectionState == ConnectionState.active) {
+//           final user = snapshot.data;
+//           if (user == null) {
+//             return const HomePage();
+//           } else {
+//             return const FinalS();
+//           }
+//         } else {
+//           return const CircularProgressIndicator();
+//         }
+//       },
+//     ));
+//   }
+// }
+
 class DecideScreen extends StatelessWidget {
   const DecideScreen({super.key});
 
@@ -41,10 +64,10 @@ class DecideScreen extends StatelessWidget {
         switch (snapshot.connectionState) {
           case ConnectionState.done:
             final user = FirebaseAuth.instance.currentUser;
-            devtools.log(user.toString());
+           // devtools.log(user.toString());
             if (user != null) {
               if (user.emailVerified) {
-                devtools.log("Email is verified");
+              //  devtools.log("Email is verified");
                 return const FinalS();
               } else {
                 return const HomePage();

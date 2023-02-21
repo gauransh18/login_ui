@@ -2,6 +2,7 @@
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:login_ui/constants/routes.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:confetti/confetti.dart';
@@ -38,6 +39,7 @@ class _FinalSState extends State<FinalS> {
                 onPressed: () async {
                   Navigator.of(context).pop(true);
                   await FirebaseAuth.instance.signOut();
+                  await GoogleSignIn().signOut();
                   Navigator.of(context).pushNamedAndRemoveUntil(
                     loginRoute,
                     (_) => false,
