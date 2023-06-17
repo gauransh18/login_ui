@@ -1,5 +1,7 @@
 // ignore_for_file: camel_case_types, prefer_const_constructors
 
+import 'dart:math';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -12,6 +14,20 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:login_ui/utilities/show_error_dialog.dart';
 import 'package:login_ui/constants/routes.dart';
 import 'package:login_ui/services/auth/auth_service.dart';
+
+class Greeting {
+  final String language;
+  final String message;
+
+  Greeting({required this.language, required this.message});
+
+  factory Greeting.fromJson(Map<String, dynamic> json) {
+    return Greeting(
+      language: json['language'],
+      message: json['message'],
+    );
+  }
+}
 
 class registerView extends StatefulWidget {
   const registerView({Key? key}) : super(key: key);
@@ -36,6 +52,7 @@ final avatarWidget = PeepAvatar.fromPeep(
 class _registerViewState extends State<registerView> {
   String greetingTextPrint = 'Hello!';
   String greetingTextLanguage = 'English';
+  List<Greeting> greetings = [];
 
   late final TextEditingController _email;
   late final TextEditingController _password;
@@ -49,26 +66,26 @@ class _registerViewState extends State<registerView> {
     super.initState();
   }
 
-  //get greeting text from www.greeetingsapi.com/random
+  //get greeting text
   Future<void> hehe() async {
-    try {
-      final response =
-          await http.get(Uri.parse('https://www.greetingsapi.com/random'));
-      if (response.statusCode == 200) {
-        final jsonResponse = json.decode(response.body);
-        final greetingText = jsonResponse['greeting'];
-        setState(() {
-          greetingTextPrint = greetingText;
-          greetingTextLanguage = jsonResponse['language'];
-          devtools.log(
-              "Greeting text loaded: $greetingText, language: ${jsonResponse['language']}");
-        });
-      } else {
-        devtools.log("Failed to load greeting text: ${response.statusCode}");
-      }
-    } catch (e) {
-      devtools.log("Failed to load greeting text: $e");
+    final response = await http.get(Uri.parse(
+        'https://gauransh18.github.io/login_ui/assets/greetings.json'));
+    if (response.statusCode == 200) {
+      final List<dynamic> data = jsonDecode(response.body)['greetings'];
+      setState(() {
+        greetings = data.map((json) => Greeting.fromJson(json)).toList();
+        greetingTextPrint = getRandomGreeting();
+      });
     }
+  }
+
+  String getRandomGreeting() {
+    final random = Random();
+    final randomIndex = random.nextInt(greetings.length);
+    setState(() {
+      greetingTextLanguage = greetings[randomIndex].language;
+    });
+    return greetings[randomIndex].message;
   }
 
   //return the greeting text language as string
@@ -217,43 +234,45 @@ class _registerViewState extends State<registerView> {
                 ),
 
                 const SizedBox(height: 10),
-               //password text field
-                  Padding(
-        padding: const EdgeInsets.fromLTRB(20.0, 0.0, 20.0, 0.0),
-        child: Container(
-          decoration: BoxDecoration(
-            color: const Color.fromARGB(255, 225, 225, 225),
-            borderRadius: BorderRadius.circular(10),
-          ),
-          child: Padding(
-            padding: const EdgeInsets.only(left: 10.0),
-            child: TextFormField(
-              controller: _password,
-              obscureText: _obscurePassword,
-              enableSuggestions: false,
-              autocorrect: false,
-              decoration: InputDecoration(
-                border: InputBorder.none,
-                hintText: "Password",
-                hintStyle: TextStyle(
-                  color: Color.fromARGB(255, 117, 117, 117),
-                ),
-                suffixIcon: GestureDetector(
-                  onTap: () {
-                    setState(() {
-                      _obscurePassword = !_obscurePassword;
-                    });
-                  },
-                  child: Icon(
-                    _obscurePassword ? Icons.visibility : Icons.visibility_off,
-                    color: Colors.grey,
+                //password text field
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(20.0, 0.0, 20.0, 0.0),
+                  child: Container(
+                    decoration: BoxDecoration(
+                      color: const Color.fromARGB(255, 225, 225, 225),
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    child: Padding(
+                      padding: const EdgeInsets.only(left: 10.0),
+                      child: TextFormField(
+                        controller: _password,
+                        obscureText: _obscurePassword,
+                        enableSuggestions: false,
+                        autocorrect: false,
+                        decoration: InputDecoration(
+                          border: InputBorder.none,
+                          hintText: "Password",
+                          hintStyle: TextStyle(
+                            color: Color.fromARGB(255, 117, 117, 117),
+                          ),
+                          suffixIcon: GestureDetector(
+                            onTap: () {
+                              setState(() {
+                                _obscurePassword = !_obscurePassword;
+                              });
+                            },
+                            child: Icon(
+                              _obscurePassword
+                                  ? Icons.visibility
+                                  : Icons.visibility_off,
+                              color: Colors.grey,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
                   ),
                 ),
-              ),
-            ),
-          ),
-        ),
-      ),
 
                 const SizedBox(height: 10),
                 Padding(
