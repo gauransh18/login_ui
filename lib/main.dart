@@ -22,7 +22,7 @@ void main() async {
       routes: {
         loginRoute: (context) => const HomePage(),
         registerRoute: (context) => const registerView(),
-        finalRoute: (context) => const FinalS(),
+        finalRoute: (context) => FinalS(),
       }));
 }
 
@@ -69,7 +69,7 @@ class DecideScreen extends StatelessWidget {
             if (user != null) {
               if (user.emailVerified) {
               //  devtools.log("Email is verified");
-                return const FinalS();
+                return FinalS();
               } else {
                 return const HomePage();
               }

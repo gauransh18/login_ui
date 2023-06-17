@@ -9,7 +9,7 @@
       "client_info": {
         "mobilesdk_app_id": "1:764111107119:android:ed01c92fcae0c6647d82da",
         "android_client_info": {
-          "package_name": "com.example.login_ui"
+          "package_name": "com.gauransh.login_ui"
         }
       },
       "oauth_client": [

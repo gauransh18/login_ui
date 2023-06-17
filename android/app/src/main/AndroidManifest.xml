@@ -1,5 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.login_ui">
+    package="com.gauransh.login_ui">
+
+     <uses-permission android:name="android.permission.INTERNET" />
    <application
         android:label="login_ui"
         android:name="${applicationName}"

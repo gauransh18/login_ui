@@ -1,4 +1,4 @@
-package com.example.login_ui
+package com.gauransh.login_ui
 
 import io.flutter.embedding.android.FlutterActivity
 
