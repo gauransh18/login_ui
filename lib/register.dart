@@ -39,6 +39,7 @@ class _registerViewState extends State<registerView> {
 
   late final TextEditingController _email;
   late final TextEditingController _password;
+  bool _obscurePassword = true;
 
   @override
   void initState() {
@@ -216,31 +217,43 @@ class _registerViewState extends State<registerView> {
                 ),
 
                 const SizedBox(height: 10),
-                //password text field
-                Padding(
-                  padding: const EdgeInsets.fromLTRB(20.0, 0.0, 20.0, 0.0),
-                  child: Container(
-                    decoration: BoxDecoration(
-                      color: const Color.fromARGB(255, 225, 225, 225),
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                    child: Padding(
-                      padding: const EdgeInsets.only(left: 10.0),
-                      child: TextField(
-                        controller: _password,
-                        obscureText: true,
-                        enableSuggestions: false,
-                        autocorrect: false,
-                        decoration: const InputDecoration(
-                            border: InputBorder.none,
-                            hintText: "Password",
-                            hintStyle: TextStyle(
-                              color: Color.fromARGB(255, 117, 117, 117),
-                            )),
-                      ),
-                    ),
+               //password text field
+                  Padding(
+        padding: const EdgeInsets.fromLTRB(20.0, 0.0, 20.0, 0.0),
+        child: Container(
+          decoration: BoxDecoration(
+            color: const Color.fromARGB(255, 225, 225, 225),
+            borderRadius: BorderRadius.circular(10),
+          ),
+          child: Padding(
+            padding: const EdgeInsets.only(left: 10.0),
+            child: TextFormField(
+              controller: _password,
+              obscureText: _obscurePassword,
+              enableSuggestions: false,
+              autocorrect: false,
+              decoration: InputDecoration(
+                border: InputBorder.none,
+                hintText: "Password",
+                hintStyle: TextStyle(
+                  color: Color.fromARGB(255, 117, 117, 117),
+                ),
+                suffixIcon: GestureDetector(
+                  onTap: () {
+                    setState(() {
+                      _obscurePassword = !_obscurePassword;
+                    });
+                  },
+                  child: Icon(
+                    _obscurePassword ? Icons.visibility : Icons.visibility_off,
+                    color: Colors.grey,
                   ),
                 ),
+              ),
+            ),
+          ),
+        ),
+      ),
 
                 const SizedBox(height: 10),
                 Padding(

@@ -1,0 +1,204 @@
+{
+  "greetings": [
+    {
+      "language": "English",
+      "message": "Hello"
+    },
+    {
+      "language": "Spanish",
+      "message": "Hola"
+    },
+    {
+      "language": "French",
+      "message": "Bonjour"
+    },
+    {
+      "language": "German",
+      "message": "Hallo"
+    },
+    {
+      "language": "Italian",
+      "message": "Ciao"
+    },
+    {
+      "language": "Portuguese",
+      "message": "Olá"
+    },
+    {
+      "language": "Dutch",
+      "message": "Hallo"
+    },
+    {
+      "language": "Swedish",
+      "message": "Hej"
+    },
+    {
+      "language": "Norwegian",
+      "message": "Hei"
+    },
+    {
+      "language": "Danish",
+      "message": "Hej"
+    },
+    {
+      "language": "Finnish",
+      "message": "Hei"
+    },
+    {
+      "language": "Russian",
+      "message": "Привет"
+    },
+    {
+      "language": "Greek",
+      "message": "Γειά σου"
+    },
+    {
+      "language": "Turkish",
+      "message": "Merhaba"
+    },
+    {
+      "language": "Arabic",
+      "message": "مرحبا"
+    },
+    {
+      "language": "Hindi",
+      "message": "नमस्ते"
+    },
+    {
+      "language": "Bengali",
+      "message": "হ্যালো"
+    },
+    {
+      "language": "Japanese",
+      "message": "こんにちは"
+    },
+    {
+      "language": "Korean",
+      "message": "안녕하세요"
+    },
+    {
+      "language": "Chinese",
+      "message": "你好"
+    },
+    {
+      "language": "Vietnamese",
+      "message": "Xin chào"
+    },
+    {
+      "language": "Thai",
+      "message": "สวัสดี"
+    },
+    {
+      "language": "Indonesian",
+      "message": "Halo"
+    },
+    {
+      "language": "Malay",
+      "message": "Hai"
+    },
+    {
+      "language": "Filipino",
+      "message": "Kumusta"
+    },
+    {
+      "language": "Swahili",
+      "message": "Habari"
+    },
+    {
+      "language": "Zulu",
+      "message": "Sawubona"
+    },
+    {
+      "language": "Afrikaans",
+      "message": "Hallo"
+    },
+    {
+      "language": "Polish",
+      "message": "Cześć"
+    },
+    {
+      "language": "Czech",
+      "message": "Ahoj"
+    },
+    {
+      "language": "Slovak",
+      "message": "Ahoj"
+    },
+    {
+      "language": "Hungarian",
+      "message": "Sziasztok"
+    },
+    {
+      "language": "Romanian",
+      "message": "Salut"
+    },
+    {
+      "language": "Bulgarian",
+      "message": "Здравейте"
+    },
+    {
+      "language": "Ukrainian",
+      "message": "Привіт"
+    },
+    {
+      "language": "Serbian",
+      "message": "Здраво"
+    },
+    {
+      "language": "Croatian",
+      "message": "Bok"
+    },
+    {
+      "language": "Slovenian",
+      "message": "Zdravo"
+    },
+    {
+      "language": "Estonian",
+      "message": "Tere"
+    },
+    {
+      "language": "Latvian",
+      "message": "Sveiki"
+    },
+    {
+      "language": "Lithuanian",
+      "message": "Labas"
+    },
+    {
+      "language": "Hebrew",
+      "message": "שלום"
+    },
+    {
+      "language": "Persian",
+      "message": "سلام"
+    },
+    {
+      "language": "Urdu",
+      "message": "ہیلو"
+    },
+    {
+      "language": "Kurdish",
+      "message": "Silav"
+    },
+    {
+      "language": "Somali",
+      "message": "Hadda wanaagsan"
+    },
+    {
+      "language": "Amharic",
+      "message": "ሰላም"
+    },
+    {
+      "language": "Yoruba",
+      "message": "Bawo"
+    },
+    {
+      "language": "Hausa",
+      "message": "Sannu"
+    },
+    {
+      "language": "Swedish Chef",
+      "message": "Bork bork bork!"
+    }
+  ]
+}
